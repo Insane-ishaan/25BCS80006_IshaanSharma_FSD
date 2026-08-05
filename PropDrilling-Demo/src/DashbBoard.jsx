@@ -16,35 +16,39 @@ const bull = (
   </Box>
 );
 
-export default function DashBoard({ empInfo }) {
+export default function DashBoard({ userInfo }) {
   return (
     <Card
       sx={{
-        minWidth: 275,
-        mx: "auto",
+        width: 300,
         mt: 8,
         p: 2,
-        transition: ".3s",
-        "&:hover": {
-          transform: "scale(1.03)",
-          boxShadow: 8,
-        },
       }}
     >
-      <CardContent>
-        <Avatar sx={{ width: 70, height: 70 }}>{empInfo.Emp[0]}</Avatar>
+      <CardContent
+        sx={{
+          display: "flex",
+          gap: 3,
+        }}
+      >
+        <Avatar sx={{ width: 70, height: 70 }}>{userInfo.name[0]}</Avatar>
         <Typography
           gutterBottom
           variant="h5"
           fontWeight="bold"
           color="primary"
-          sx={{ color: "text.secondary", fontSize: 14 }}
+          sx={{
+            color: "text.secondary",
+            fontSize: 14,
+            display: "flex",
+            alignSelf: "center",
+          }}
         >
-          Employee {empInfo.Emp} DashBoard
+          Student {userInfo.name} DashBoard
         </Typography>
       </CardContent>
       <CardActions>
-        <EmployeePortal empInfo={empInfo} />
+        <EmployeePortal userInfo={userInfo} />
       </CardActions>
     </Card>
   );

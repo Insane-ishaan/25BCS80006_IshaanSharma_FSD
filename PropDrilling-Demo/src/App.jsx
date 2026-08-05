@@ -1,15 +1,17 @@
 import DashBoard from "./DashbBoard";
 
 function App() {
-  const EmployeeInfo = {
-    Emp: "Rahul Sharma",
-    Dep: "Engineering",
-    AvailBalance: "12 days",
+  const userInfo = {
+    name: "Karan Mehta",
+    email: "karan@gmail.com",
+    program: "Web Development",
   };
 
-  return <div>
-    <DashBoard empInfo={EmployeeInfo}/>
-  </div>;
+  return (
+    <div>
+      <DashBoard userInfo={userInfo} />
+    </div>
+  );
 }
 
 export default App;
