@@ -4,7 +4,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import Leave from "./LeaveForm";
 
-export default function EmployeePortal({ userInfo }) {
+export default function EmployeePortal({ userInfo, courseList }) {
   const id = React.useId();
   const buttonId = `${id}-button`;
   const menuId = `${id}-menu`;
@@ -26,7 +26,7 @@ export default function EmployeePortal({ userInfo }) {
         aria-expanded={open}
         onClick={handleClick}
       >
-        Deatil
+        View
       </Button>
       <Menu
         id={menuId}
@@ -40,7 +40,7 @@ export default function EmployeePortal({ userInfo }) {
         }}
       >
         <MenuItem onClick={handleClose}>
-        <Leave userInfo={userInfo}/>
+          <Leave userInfo={userInfo} />
         </MenuItem>
       </Menu>
     </div>

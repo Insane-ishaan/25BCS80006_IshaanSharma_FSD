@@ -6,6 +6,8 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import EmployeePortal from "./EmployeeSection";
 import Avatar from "@mui/material/Avatar";
+import Catalog from "./Catalog";
+import { useState } from "react";
 
 const bull = (
   <Box
@@ -16,7 +18,13 @@ const bull = (
   </Box>
 );
 
-export default function DashBoard({ userInfo }) {
+export default function DashBoard({ userInfo, courseList }) {
+  const [enroll, setEnroll] = useState(0);
+
+  const handleEnroll = () => {
+    setEnroll((prev) => prev + 1);
+  };
+
   return (
     <Card
       sx={{
@@ -28,7 +36,7 @@ export default function DashBoard({ userInfo }) {
       <CardContent
         sx={{
           display: "flex",
-          gap: 3,
+          gap: 2,
         }}
       >
         <Avatar sx={{ width: 70, height: 70 }}>{userInfo.name[0]}</Avatar>
@@ -44,11 +52,20 @@ export default function DashBoard({ userInfo }) {
             alignSelf: "center",
           }}
         >
-          Student {userInfo.name} DashBoard
+          Welcome Back {userInfo.name.split(" ")}
+          <br />
+          Program {userInfo.program}
         </Typography>
       </CardContent>
+      Enroll : {enroll}
       <CardActions>
-        <EmployeePortal userInfo={userInfo} />
+        <EmployeePortal userInfo={userInfo} courseList={courseList} />
+        <Catalog
+          userInfo={userInfo}
+          courseList={courseList}
+          enroll={enroll}
+          setEnroll={setEnroll}
+        />
       </CardActions>
     </Card>
   );

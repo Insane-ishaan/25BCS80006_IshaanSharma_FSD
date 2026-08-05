@@ -1,41 +1,49 @@
-import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
+import * as React from "react";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import Leave from "./LeaveForm";
+import CatalogList from "./CatalogList";
 
-const bull = (
-  <Box
-    component="span"
-    sx={{ display: "inline-block", mx: "2px", transform: "scale(0.8)" }}
-  >
-    •
-  </Box>
-);
+export default function Catalog({ userInfo, courseList, enroll, setEnroll }) {
+  const id = React.useId();
+  const buttonId = `${id}-button`;
+  const menuId = `${id}-menu`;
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
-export default function BasicCard() {
   return (
-    <Card sx={{ minWidth: 275 }}>
-      <CardContent>
-        <Typography gutterBottom sx={{ color: "text.secondary", fontSize: 14 }}>
-          Word of the Day
-        </Typography>
-        <Typography variant="h5" component="div">
-          be{bull}nev{bull}o{bull}lent
-        </Typography>
-        <Typography sx={{ color: "text.secondary", mb: 1.5 }}>
-          adjective
-        </Typography>
-        <Typography variant="body2">
-          well meaning and kindly.
-          <br />
-          {'"a benevolent smile"'}
-        </Typography>
-      </CardContent>
-      <CardActions>
-        <Button size="small">Learn More</Button>
-      </CardActions>
-    </Card>
+    <div>
+      <Button
+        id={buttonId}
+        aria-controls={open ? menuId : undefined}
+        aria-haspopup="true"
+        aria-expanded={open}
+        onClick={handleClick}
+      >
+        Detail
+      </Button>
+      <Menu
+        id={menuId}
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        slotProps={{
+          list: {
+            "aria-labelledby": buttonId,
+          },
+        }}
+      >
+        <MenuItem onClick={handleClose}>
+          <CatalogList courseList={courseList} setEnroll={setEnroll}/>
+        </MenuItem>
+      </Menu>
+    </div>
   );
 }
