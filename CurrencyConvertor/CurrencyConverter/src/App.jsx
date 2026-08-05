@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useReducer } from "react";
 import Box from "@mui/material/Box";
 import MenuItem from "@mui/material/MenuItem";
 import TextField from "@mui/material/TextField";
@@ -7,7 +7,48 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 
+function reducer(state, action) {
+  switch (action.type) {
+    case "FETCH_START":
+      return {
+        loading: true,
+      };
+
+    case "FETCH_SUCCESS":
+      return {
+        amount: "",
+        from: action.payload.base,
+        to: action.payload.quota,
+        result: "",
+        perRate: action.payload.rate,
+        time: action.payload.date,
+        loading: false,
+      };
+
+    case "FETCH_ERROR":
+      return {
+        loading: false,
+        error: action.payload,
+      };
+
+    default:
+      return state;
+  }
+}
+
 function App() {
+  const initialState = {
+    currencies: [],
+    amount: "",
+    from: "",
+    to: "",
+    result: "",
+    perRate: "",
+    time: "",
+    loading: false,
+    error: null,
+  };
+  const [state, dispatch] = useReducer(reducer, initialState);
   const [currencies, setCurrencies] = useState([]);
   const [amount, setAmount] = useState("");
   const [from, setFrom] = useState("");
@@ -55,19 +96,24 @@ function App() {
     if (!from || !to || !amount) {
       return;
     }
+
+    dispatch({
+      type: "FETCH_START",
+    });
     try {
-      setLoading(true);
       const API = `https://api.frankfurter.dev/v2/rate/${from}/${to}`;
       const res = await fetch(API);
-      const format = await res.json();
-      setOriginal(format.rate);
-      setTime(format.date);
-      setResult(format.rate * Number(amount));
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const formatData = await res.json();
+
+      dispatch({
+        type: "FETCH_SUCCESS",
+        payload: formatData,
+      });
     } catch (e) {
-      console.log(e);
-    } finally {
-      setLoading(false);
+      dispatch({
+        type: "FETCH_ERROR",
+        payload: e.message,
+      });
     }
   };
   return (
@@ -143,7 +189,7 @@ function App() {
             }}
           >
             {cards.map((card) => (
-              <Card key={card.id} sx={{px:3}}>
+              <Card key={card.id} sx={{ px: 3 }}>
                 <CardContent>
                   <Typography variant="h5" component="div">
                     {card.title}
